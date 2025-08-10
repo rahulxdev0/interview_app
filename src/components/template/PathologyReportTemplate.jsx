@@ -1,200 +1,15 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image } from '@react-pdf/renderer';
-import { styles } from './template'; 
+import React, { useState } from 'react';
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image, PDFViewer } from '@react-pdf/renderer';
+import { styles } from './template';
 
-// Create styles
-// const styles = StyleSheet.create({
-//   page: {
-//     flexDirection: 'column',
-//     backgroundColor: '#FFFFFF',
-//     padding: 30,
-//     fontFamily: 'Helvetica'
-//   },
-//   header: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     marginBottom: 20,
-//     borderBottom: '2px solid #3498db',
-//     paddingBottom: 15
-//   },
-//   labInfo: {
-//     width: '70%'
-//   },
-//   labIdentity: {
-//     flexDirection: 'row',
-//     alignItems: 'flex-start',
-//     gap: 15
-//   },
-//   labNameContainer: {
-//     flex: 1
-//   },
-//   labName: {
-//     fontSize: 22,
-//     fontWeight: 'bold',
-//     color: '#2c3e50',
-//     marginBottom: 8
-//   },
-//   labAddress: {
-//     fontSize: 11,
-//     color: '#5d6d7e',
-//     marginBottom: 4,
-//     lineHeight: 1.4
-//   },
-//   labContact: {
-//     fontSize: 10,
-//     color: '#7f8c8d',
-//     marginBottom: 4,
-//     lineHeight: 1.4
-//   },
-//   labCredentials: {
-//     fontSize: 10,
-//     color: '#7f8c8d',
-//     lineHeight: 1.4
-//   },
-//   reportInfo: {
-//     width: '30%',
-//     alignItems: 'flex-end'
-//   },
-//   reportId: {
-//     fontSize: 10,
-//     color: '#7f8c8d'
-//   },
-//   logo: {
-//     width: 60,
-//     height: 60,
-//     marginTop: 5
-//   },
-//   patientInfo: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     marginBottom: 20,
-//     backgroundColor: '#f8f9fa',
-//     padding: 15,
-//     borderRadius: 5
-//   },
-//   patientDetails: {
-//     width: '48%'
-//   },
-//   patientHeader: {
-//     fontSize: 12,
-//     fontWeight: 'bold',
-//     marginBottom: 5,
-//     color: '#2c3e50'
-//   },
-//   patientText: {
-//     fontSize: 11,
-//     marginBottom: 3,
-//     color: '#34495e'
-//   },
-//   testSection: {
-//     marginBottom: 25
-//   },
-//   testHeader: {
-//     fontSize: 16,
-//     fontWeight: 'bold',
-//     color: '#2c3e50',
-//     marginBottom: 10,
-//     borderBottom: '1px solid #e0e0e0',
-//     paddingBottom: 5
-//   },
-//   parameterTable: {
-//     width: '100%',
-//     marginBottom: 15
-//   },
-//   parameterRow: {
-//     flexDirection: 'row',
-//     borderBottom: '1px solid #e0e0e0',
-//     paddingVertical: 8
-//   },
-//   parameterName: {
-//     width: '40%',
-//     fontSize: 11,
-//     fontWeight: 'bold',
-//     color: '#34495e'
-//   },
-//   parameterValue: {
-//     width: '20%',
-//     fontSize: 11,
-//     textAlign: 'center',
-//     color: '#34495e'
-//   },
-//   parameterRange: {
-//     width: '30%',
-//     fontSize: 11,
-//     color: '#7f8c8d'
-//   },
-//   parameterUnit: {
-//     width: '10%',
-//     fontSize: 11,
-//     color: '#7f8c8d'
-//   },
-//   subParameter: {
-//     flexDirection: 'row',
-//     paddingLeft: 15,
-//     paddingVertical: 5
-//   },
-//   subParameterName: {
-//     width: '40%',
-//     fontSize: 10,
-//     color: '#7f8c8d'
-//   },
-//   subParameterValue: {
-//     width: '20%',
-//     fontSize: 10,
-//     textAlign: 'center',
-//     color: '#7f8c8d'
-//   },
-//   subParameterRange: {
-//     width: '30%',
-//     fontSize: 10,
-//     color: '#7f8c8d'
-//   },
-//   subParameterUnit: {
-//     width: '10%',
-//     fontSize: 10,
-//     color: '#7f8c8d'
-//   },
-//   abnormalValue: {
-//     color: '#e74c3c',
-//     fontWeight: 'bold'
-//   },
-//   footer: {
-//     position: 'absolute',
-//     bottom: 30,
-//     left: 30,
-//     right: 30,
-//     fontSize: 10,
-//     color: '#95a5a6',
-//     textAlign: 'center',
-//     borderTop: '1px solid #e0e0e0',
-//     paddingTop: 10
-//   },
-//   signature: {
-//     flexDirection: 'row',
-//     justifyContent: 'flex-end',
-//     marginTop: 40
-//   },
-//   signatureBox: {
-//     width: '30%',
-//     borderTop: '1px solid #2c3e50',
-//     paddingTop: 5,
-//     textAlign: 'center'
-//   },
-//   signatureText: {
-//     fontSize: 10,
-//     color: '#2c3e50'
-//   }
-// });
-
-// Create Document Component
-const PathologyDocument = ({ report }) => (
+const PathologyDocument = ({ report, pageSize = 'A4' }) => (
   <Document>
-    <Page size="A4" style={styles.page}>
+    <Page size={pageSize} style={styles.page}>
       {/* Header with Lab Info */}
       <View style={styles.header}>
         <View style={styles.labInfo}>
           <View style={styles.labIdentity}>
-            {report.logo && <Image src={report.logo} style={styles.logo} />}
+            {/* {report.logo && <Image src={report.logo} style={styles.logo} />} */}
             <View style={styles.labNameContainer}>
               <Text style={styles.labName}>{report.labName}</Text>
               <Text style={styles.labAddress}>
@@ -370,11 +185,97 @@ const PathologyDocument = ({ report }) => (
   </Document>
 );
 
-// Component with download button
+// Preview Modal Component
+const PreviewModal = ({ isOpen, onClose, report, pageSize }) => {
+  if (!isOpen) return null;
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+      <div className="w-[95%] h-[95%] bg-white rounded-lg flex flex-col">
+        {/* Modal Header */}
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-xl font-bold text-gray-800">Report Preview - {pageSize}</h2>
+          <div className="flex gap-2">
+            <button
+              onClick={handlePrint}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            >
+              Print
+            </button>
+            <PDFDownloadLink 
+              document={<PathologyDocument report={report} pageSize={pageSize} />} 
+              fileName={`pathology_report_${report.reportId}_${pageSize}.pdf`}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors no-underline"
+            >
+              {({ loading }) => (loading ? 'Generating...' : 'Download PDF')}
+            </PDFDownloadLink>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+        
+        {/* PDF Viewer */}
+        <div className="flex-1 p-4">
+          <PDFViewer width="100%" height="100%">
+            <PathologyDocument report={report} pageSize={pageSize} />
+          </PDFViewer>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Logo Upload Component
+const LogoUploader = ({ onLogoChange, currentLogo }) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        onLogoChange(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="bg-white p-4 rounded-lg shadow">
+      <h3 className="text-lg font-semibold mb-3 text-gray-800">Custom Logo</h3>
+      <div className="space-y-3">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        />
+        {currentLogo && (
+          <div className="flex items-center gap-2">
+            <img src={currentLogo} alt="Current logo" className="w-12 h-12 object-contain border rounded" />
+            <span className="text-sm text-gray-600">Current logo</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Main Component
 const PathologyReportTemplate = () => {
+  const [showPreview, setShowPreview] = useState(false);
+  const [pageSize, setPageSize] = useState('A4');
+  const [logoUrl, setLogoUrl] = useState('/pathlog.png');
+
   // Sample report data
   const report = {
-    logo: 'pathlog.png', // Replace with actual logo URL
+    logo: logoUrl,
     labName: 'Advanced Diagnostic Center',
     labAddress: '123 Medical Drive, Health City, HC 12345',
     labPhone: '+1 (555) 123-4567',
@@ -464,24 +365,93 @@ const PathologyReportTemplate = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Pathology Report Generator</h2>
-      <PDFDownloadLink 
-        document={<PathologyDocument report={report} />} 
-        fileName={`pathology_report_${report.reportId}.pdf`}
-        style={{
-          textDecoration: 'none',
-          padding: '10px 20px',
-          backgroundColor: '#3498db',
-          color: 'white',
-          borderRadius: 4,
-          fontWeight: 'bold',
-          marginTop: '20px',
-          display: 'inline-block'
-        }}
-      >
-        {({ loading }) => (loading ? 'Generating report...' : 'Download Pathology Report')}
-      </PDFDownloadLink>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Pathology Report Generator</h1>
+          <p className="text-gray-600">Customize and generate professional pathology reports</p>
+        </div>
+
+        {/* Controls Panel */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Logo Upload */}
+          <LogoUploader onLogoChange={setLogoUrl} currentLogo={logoUrl} />
+
+          {/* Page Size Selection */}
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-3 text-gray-800">Page Size</h3>
+            <div className="space-y-2">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="pageSize"
+                  value="A4"
+                  checked={pageSize === 'A4'}
+                  onChange={(e) => setPageSize(e.target.value)}
+                  className="mr-2"
+                />
+                <span className="text-gray-700">A4 (210 × 297 mm)</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="pageSize"
+                  value="A5"
+                  checked={pageSize === 'A5'}
+                  onChange={(e) => setPageSize(e.target.value)}
+                  className="mr-2"
+                />
+                <span className="text-gray-700">A5 (148 × 210 mm)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <div className="flex flex-wrap gap-4 justify-center">
+            <button
+              onClick={() => setShowPreview(true)}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            >
+              Preview Report ({pageSize})
+            </button>
+            
+            <PDFDownloadLink 
+              document={<PathologyDocument report={report} pageSize={pageSize} />} 
+              fileName={`pathology_report_${report.reportId}_${pageSize}.pdf`}
+              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold no-underline"
+            >
+              {({ loading }) => (loading ? 'Generating...' : `Download ${pageSize} PDF`)}
+            </PDFDownloadLink>
+          </div>
+        </div>
+
+        {/* Report Info */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">Report Information</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p><span className="font-medium">Patient:</span> {report.patient.name}</p>
+              <p><span className="font-medium">Report ID:</span> {report.reportId}</p>
+              <p><span className="font-medium">Page Size:</span> {pageSize}</p>
+            </div>
+            <div>
+              <p><span className="font-medium">Lab:</span> {report.labName}</p>
+              <p><span className="font-medium">Date:</span> {report.date}</p>
+              <p><span className="font-medium">Logo:</span> {logoUrl ? 'Custom' : 'Default'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Preview Modal */}
+      <PreviewModal 
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        report={report}
+        pageSize={pageSize}
+      />
     </div>
   );
 };
