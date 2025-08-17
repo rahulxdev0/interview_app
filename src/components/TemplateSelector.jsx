@@ -29,8 +29,8 @@ const TemplateSelector = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Select Report Template</h1>
+      <div className="">
+        <h1 className="text-2xl font-bold text-gray-500 mb-8">Select Report Template</h1>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Template Selection Panel */}
@@ -56,7 +56,7 @@ const TemplateSelector = () => {
                       </div>
                       <div className={`w-4 h-4 rounded-full border-2 mt-1 ${
                         selectedTemplate === template.id
-                          ? 'border-blue-500 bg-blue-500'
+                          ? 'border-green-500 bg-green-600'
                           : 'border-gray-300'
                       }`}>
                         {selectedTemplate === template.id && (
